@@ -172,14 +172,16 @@ class App extends Component {
           </header>
         </PanZoom>
         <button
+          className="zoom-button"
           onClick={this.handleZoomIn}
-          style={{ position: "absolute", top: 20, right: 20 }}
+          style={{ position: "absolute", top: 60, right: 20 }}
         >
           +
         </button>
         <button
+          className="zoom-button"
           onClick={this.handleZoomOut}
-          style={{ position: "absolute", top: 50, right: 20 }}
+          style={{ position: "absolute", top: 90, right: 20 }}
         >
           -
         </button>
@@ -187,8 +189,8 @@ class App extends Component {
           className="filter"
           style={{
             position: "absolute",
-            top: 20,
-            left: 20
+            top: 60,
+            left: 90
           }}
         >
           {filters.map((emoji, i) => (

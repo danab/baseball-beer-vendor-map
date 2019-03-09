@@ -1,3 +1,26 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.App {
+  background: white;
+  overflow: none;
+  position: relative;
+  border-left: 1px solid #555;
+  border-right: 1px solid #555;
+}
+.App,
+.pan-container {
+  padding: 40px;
+  margin: auto;
+  width: 630px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.filter button {
+  font-size: 1.4em;
+}
 .dot {
   display: block;
   margin-left: -10px;
@@ -18,4 +41,10 @@
   background-color: white;
   border: 1px solid black;
   border-radius: 3px;
+}
+
+.zoom-button {
+  font-size: 1.4em;
+  width: 30px;
+  text-align: center;
 }
