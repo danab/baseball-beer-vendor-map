@@ -21,11 +21,28 @@ class App extends Component {
               left: "0px"
             }}
           />
-          {vendors.map(vendor => (
-            <div style={{ position: "absolute", ...vendor.style }}>
-              {vendor.value}
-            </div>
-          ))}
+          <div
+            style={{
+              position: "absolute",
+              zIndex: 9011,
+              top: "350px",
+              left: "100px"
+            }}
+          >
+            Heeeeelloooo
+          </div>
+          {vendors.map(vendor => {
+            const { top, left } = vendor.style;
+
+            return (
+              <div
+                title={`${top} ${left}`}
+                style={{ position: "absolute", ...vendor.style }}
+              >
+                {vendor.value}
+              </div>
+            );
+          })}
         </header>
       </div>
     );
