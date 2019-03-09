@@ -23,13 +23,19 @@ function getRandomInt(max) {
 }
 
 class Paths extends Component {
+  state = { step: 0 };
+  componentDidMount() {
+    setInterval(() => {
+      this.setState({ step: this.state.step + 1 });
+    }, 80);
+  }
   render() {
     return (
       <div>
-        {paths.map(path => {
+        {paths.map((path, i) => {
           const keys = Object.keys(path);
-          const key = this.props.step % keys.length;
-          const iterations = Math.floor(this.props.step / keys.length);
+          const key = this.state.step % keys.length;
+          const iterations = Math.floor(this.state.step / keys.length);
 
           let idx;
           if (iterations % 2 === 0) {
@@ -40,6 +46,7 @@ class Paths extends Component {
           const { x, y } = path[idx];
           return (
             <div
+              key={i}
               className="dot"
               style={{
                 position: "absolute",
@@ -55,12 +62,7 @@ class Paths extends Component {
 }
 
 class App extends Component {
-  state = { zoom: 1, filter: [], vendors: [], paths, step: 0 };
-  componentDidMount() {
-    setInterval(() => {
-      this.setState({ step: this.state.step + 1 });
-    }, 80);
-  }
+  state = { zoom: 1, filter: [], vendors: [], paths };
   handleZoomIn = () => {
     this.setState({ zoom: this.state.zoom + 0.3 });
   };
@@ -85,7 +87,7 @@ class App extends Component {
     });
   };
   render() {
-    const { step, zoom } = this.state;
+    const { zoom } = this.state;
 
     const myLocation = {
       top: 100,
@@ -120,8 +122,7 @@ class App extends Component {
             >
               {"❌"}
             </div>
-            {this.state.vendors.map(vendor => {
-              // const walkTime =
+            {this.state.vendors.map((vendor, i) => {
               const { top, left } = vendor.style;
               const myTop = myLocation.top;
               const myLeft = myLocation.left;
@@ -144,7 +145,7 @@ class App extends Component {
               }
 
               return (
-                <div className="location">
+                <div key={i} className="location">
                   <div
                     className="icon"
                     style={{ position: "absolute", ...vendor.style }}
@@ -188,8 +189,9 @@ class App extends Component {
             left: 20
           }}
         >
-          {filters.map(emoji => (
+          {filters.map((emoji, i) => (
             <button
+              key={i}
               style={{
                 display: "block",
                 marginBottom: 20,
