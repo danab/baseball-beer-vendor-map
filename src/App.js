@@ -3,10 +3,22 @@ import vendors from "./vendors.json";
 // import './App.css';
 import PanZoom from "@ajainarayanan/react-pan-zoom";
 
+const filters = ["🍺", "🍗", "👪", "🚹", "🚺"];
+
+function filterVendors(filter) {
+  return vendors.filter(vendor => {
+    return filter.indexOf(vendor.value) !== -1;
+  });
+}
+
+function isSelected(filter, emoji) {
+  return filter.indexOf(emoji) !== -1;
+}
 class App extends Component {
   state = {
     zoom: 1,
-    filter: []
+    filter: [],
+    vendors: []
   };
   handleZoomIn = () => {
     this.setState({
@@ -18,34 +30,25 @@ class App extends Component {
       zoom: this.state.zoom - 0.3
     });
   };
-  handleBeer = () => {
+  handleFilter = filterItem => () => {
+    const { filter } = this.state;
+    const arrayIdx = filter.indexOf(filterItem);
+
+    if (arrayIdx !== -1) {
+      filter.splice(arrayIdx, 1);
+    } else {
+      filter.push(filterItem);
+    }
+
+    const vendors = filterVendors(filter);
+
     this.setState({
-      filter: ["🍺"]
-    });
-  };
-  handleFood = () => {
-    this.setState({
-      filter: ["🍗"]
-    });
-  };
-  handleFamily = () => {
-    this.setState({
-      filter: ["👪"]
-    });
-  };
-  handleMens = () => {
-    this.setState({
-      filter: ["🚹"]
-    });
-  };
-  handleWomens = () => {
-    this.setState({
-      filter: ["🚺"]
+      filter: filter,
+      vendors: vendors
     });
   };
   render() {
     const { zoom } = this.state;
-    console.log(this.state.filter);
     return (
       <div className="App">
         <PanZoom zoom={zoom}>
@@ -63,7 +66,7 @@ class App extends Component {
                 left: "0px"
               }}
             />{" "}
-            {vendors.map(vendor => (
+            {this.state.vendors.map(vendor => (
               <div
                 style={{
                   position: "absolute",
@@ -96,67 +99,28 @@ class App extends Component {
         >
           -
         </button>{" "}
-        <div className="filter">
-          <button
-            onClick={this.handleBeer}
-            style={{
-              position: "absolute",
-              top: 20,
-              left: 20
-            }}
-          >
-            <span role="img" alt="beer mug">
-              🍺
-            </span>
-          </button>
-          <button
-            onClick={this.handleFood}
-            style={{
-              position: "absolute",
-              top: 50,
-              left: 20
-            }}
-          >
-            <span role="img" alt="food">
-              🍗
-            </span>
-          </button>
-          <button
-            onClick={this.handleFamily}
-            style={{
-              position: "absolute",
-              top: 80,
-              left: 20
-            }}
-          >
-            <span role="img" alt="family-bath">
-              👪
-            </span>
-          </button>
-          <button
-            onClick={this.handleMens}
-            style={{
-              position: "absolute",
-              top: 110,
-              left: 20
-            }}
-          >
-            <span role="img" alt="mens-room">
-              🚹
-            </span>
-          </button>
-          <button
-            onClick={this.handleWomens}
-            style={{
-              position: "absolute",
-              top: 140,
-              left: 20
-            }}
-          >
-            <span role="img" alt="womens-room">
-              🚺
-            </span>
-          </button>
+        <div
+          className="filter"
+          style={{
+            position: "absolute",
+            top: 20,
+            left: 20
+          }}
+        >
+          {filters.map(emoji => (
+            <button
+              style={{
+                display: "block",
+                marginBottom: 20,
+                opacity: isSelected(this.state.filter, emoji) ? 1 : 0.4
+              }}
+              onClick={this.handleFilter(emoji)}
+            >
+              <span role="img" alt="beer mug">
+                {emoji}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
     );
