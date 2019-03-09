@@ -53,7 +53,9 @@ class Paths extends Component {
                 top: y,
                 left: x
               }}
-            />
+            >
+              🌭
+            </div>
           );
         })}
       </div>
