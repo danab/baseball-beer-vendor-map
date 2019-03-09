@@ -6,3 +6,15 @@
   border-radius: 50%;
   width: 8px;
 }
+
+.hover-info {
+  display: none;
+}
+
+.location:hover .hover-info {
+  display: inline;
+  z-index: 100000;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 3px;
+}
