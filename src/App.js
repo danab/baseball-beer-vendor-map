@@ -59,6 +59,7 @@ class App extends Component {
               const myLeft = myLocation.left;
 
               const waitTime = getRandomInt(20);
+              // fudge the distance to our location
               const time = Math.round(
                 Math.sqrt((myTop - top) ** 2 + (myLeft - left) ** 2) / 20
               );
