@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import vendors from "./vendors.js";
+import paths from "./data/paths.js";
+
 // import ReactHover from "react-hover";
 import "./App.css";
 import PanZoom from "@ajainarayanan/react-pan-zoom";
@@ -20,8 +22,45 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+class Paths extends Component {
+  render() {
+    return (
+      <div>
+        {paths.map(path => {
+          const keys = Object.keys(path);
+          const key = this.props.step % keys.length;
+          const iterations = Math.floor(this.props.step / keys.length);
+
+          let idx;
+          if (iterations % 2 === 0) {
+            idx = keys[key];
+          } else {
+            idx = keys[keys.length - key - 1];
+          }
+          const { x, y } = path[idx];
+          return (
+            <div
+              className="dot"
+              style={{
+                position: "absolute",
+                top: y,
+                left: x
+              }}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}
+
 class App extends Component {
-  state = { zoom: 1, filter: [], vendors: [] };
+  state = { zoom: 1, filter: [], vendors: [], paths, step: 0 };
+  componentDidMount() {
+    setInterval(() => {
+      this.setState({ step: this.state.step + 1 });
+    }, 80);
+  }
   handleZoomIn = () => {
     this.setState({ zoom: this.state.zoom + 0.3 });
   };
@@ -46,12 +85,13 @@ class App extends Component {
     });
   };
   render() {
-    const { zoom } = this.state;
+    const { step, zoom } = this.state;
 
     const myLocation = {
       top: 100,
       left: 350
     };
+
     return (
       <div className="App">
         <PanZoom zoom={zoom}>
@@ -69,6 +109,7 @@ class App extends Component {
                 left: "0px"
               }}
             />
+            <Paths step={this.state.step} />
             <div
               style={{
                 position: "absolute",

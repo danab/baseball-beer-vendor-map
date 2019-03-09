@@ -1,11 +1,8 @@
-.hover-info {
-  display: none;
-}
-
-.location:hover .hover-info {
-  display: inline;
-  z-index: 100000;
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 3px;
+.dot {
+  display: block;
+  margin-left: -4px;
+  height: 8px;
+  background: green;
+  border-radius: 50%;
+  width: 8px;
 }
