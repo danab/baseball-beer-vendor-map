@@ -4,22 +4,49 @@ import vendors from "./vendors.js";
 import "./App.css";
 import PanZoom from "@ajainarayanan/react-pan-zoom";
 
+const filters = ["🍺", "🍗", "👪", "🚹", "🚺"];
+
+function filterVendors(filter) {
+  return vendors.filter(vendor => {
+    return filter.indexOf(vendor.value) !== -1;
+  });
+}
+
+function isSelected(filter, emoji) {
+  return filter.indexOf(emoji) !== -1;
+}
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
 class App extends Component {
-  state = { zoom: 1 };
+  state = { zoom: 1, filter: [], vendors: [] };
   handleZoomIn = () => {
     this.setState({ zoom: this.state.zoom + 0.3 });
   };
   handleZoomOut = () => {
     this.setState({ zoom: this.state.zoom - 0.3 });
   };
+  handleFilter = filterItem => () => {
+    const { filter } = this.state;
+    const arrayIdx = filter.indexOf(filterItem);
+
+    if (arrayIdx !== -1) {
+      filter.splice(arrayIdx, 1);
+    } else {
+      filter.push(filterItem);
+    }
+
+    const vendors = filterVendors(filter);
+
+    this.setState({
+      filter: filter,
+      vendors: vendors
+    });
+  };
   render() {
     const { zoom } = this.state;
-    // console.log(vendors);
-    // console.log(zoom);
 
     const myLocation = {
       top: 100,
@@ -52,7 +79,7 @@ class App extends Component {
             >
               {"❌"}
             </div>
-            {vendors.map(vendor => {
+            {this.state.vendors.map(vendor => {
               // const walkTime =
               const { top, left } = vendor.style;
               const myTop = myLocation.top;
@@ -102,16 +129,39 @@ class App extends Component {
         </PanZoom>
         <button
           onClick={this.handleZoomIn}
-          style={{ position: "absolute", top: 20, left: 20 }}
+          style={{ position: "absolute", top: 20, right: 20 }}
         >
           +
         </button>
         <button
           onClick={this.handleZoomOut}
-          style={{ position: "absolute", top: 50, left: 20 }}
+          style={{ position: "absolute", top: 50, right: 20 }}
         >
           -
         </button>
+        <div
+          className="filter"
+          style={{
+            position: "absolute",
+            top: 20,
+            left: 20
+          }}
+        >
+          {filters.map(emoji => (
+            <button
+              style={{
+                display: "block",
+                marginBottom: 20,
+                opacity: isSelected(this.state.filter, emoji) ? 1 : 0.4
+              }}
+              onClick={this.handleFilter(emoji)}
+            >
+              <span role="img" alt="beer mug">
+                {emoji}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     );
   }
